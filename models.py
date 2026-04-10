@@ -15,11 +15,13 @@ class Farmacia(Base):
 
     medicamento = relationship("Medicamento", back_populates="farmacia")
 
-    def __init__(self,nome):
-        self.nome=nome
+    def __init__(self,funcionario, cliente, horario):
+        self.funcionario=funcionario
+        self.cliente=cliente
+        self.horario=horario
 
     def __repr__(self):
-        return f"Farmacia: id={self.id} - Nome={self.nome}"
+        return f"Farmacia: id={self.id} - funcionario={self.funcionario} - cliente={self.cliente} - Horario={self.horario}"
     
 class Medicamento(Base):
     __tablename__ = "medicamento"
@@ -29,14 +31,14 @@ class Medicamento(Base):
     validade = Column(Boolean, nullable=False)
     preco = Column(Float, nullable=False)
 
-    Farmacia_id = Column(Integer, ForeignKey("farmacia.id"))
+    farmacia_id = Column(Integer, ForeignKey("farmacia.id"))
 
     farmacia = relationship("Farmacia", back_populates= "medicamento")
-    def __init__ (self,nome , validade , preco , farmacia):
+    def __init__ (self,nome , validade , preco , farmacia_id):
         self.nome=nome
         self.validade=validade
         self.preco=preco
-        self.farmacia=farmacia
+        self.farmacia_id=farmacia_id
 
     def __repr__(self):
         return f"medicamentoS: id={self.id} - nome={self.nome} - validade={self.validade} - preco={self.preco}"
