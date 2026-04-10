@@ -28,4 +28,35 @@ def inserir_medicamentos():
     session.add_all([md,md2,md3,md4,md5,md6,md7,md8,md9,md10])
     session.commit()
 
-inserir_medicamentos()
+#inserir_medicamentos()
+
+def listar_filhos():
+    with Session() as session:
+        try:
+            medicamentos = session.query(Medicamento).all()
+
+            print("\n=== MEDICAMENTOS ===")
+            for m in medicamentos:
+                print(f"{m.nome} | preço: {m.preco} | farmacia: {m.farmacia_id}")
+
+        except Exception as erro:
+            session.rollback()
+            print(f"Ocorreu un erro: {erro}")
+#listar_filhos()
+
+def filtrar_filhos():
+    with Session() as session:
+        try:
+            filtro = input("Digite o id: ")
+            medicamentos = session.query(Medicamento).filter_by(id=filtro)
+
+            print("\n=== MEDICAMENTOS ===")
+            for m in medicamentos:
+                print(f"{m.nome} | preço: {m.preco} | farmacia: {m.farmacia_id}")
+
+        except Exception as erro:
+            session.rollback()
+            print(f"Ocorreu un erro: {erro}")
+
+filtrar_filhos()
+#Corrigir o filtrar
