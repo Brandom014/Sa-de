@@ -11,7 +11,7 @@ def inserir_farmacias():
     session.add_all([f1,f2,f3,f4])
     session.commit()
 
-inserir_farmacias()
+#inserir_farmacias()
 
 def inserir_medicamentos():
     md= Medicamento("Dipirona",True,9.99,1)
@@ -48,7 +48,7 @@ def filtrar_filhos():
     with Session() as session:
         try:
             filtro = input("Digite o id: ")
-            medicamentos = session.query(Medicamento).filter_by(id=filtro)
+            medicamentos = session.query(Medicamento).filter_by(farmacia_id=filtro).all()
 
             print("\n=== MEDICAMENTOS ===")
             for m in medicamentos:
@@ -58,5 +58,5 @@ def filtrar_filhos():
             session.rollback()
             print(f"Ocorreu un erro: {erro}")
 
-filtrar_filhos()
-#Corrigir o filtrar
+#filtrar_filhos()
+
