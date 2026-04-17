@@ -96,4 +96,18 @@ def listar_pais_com_filhos():
             print(f"Ocorreu um erro: {erro}")
 
 
+def upd_pai():
+    with Session() as session:
+        try:
+            id = input("Digite o id da Farmacia que deseja atualizar: ")
+            farmacia = session.query(Farmacia).filter_by(id=id).first()
 
+            print("\n === ATUALIZAR DADOS DA FARMÁCIA ===")
+
+            if not farmacia:
+                print("Não encontrada:")
+                return 
+            
+        except Exception as erro:
+            session.rollback()
+            print(f"Ocorreu um erro: {erro}")
