@@ -3,30 +3,46 @@ from models import Session, Farmacia, Medicamento
 session = Session()
 
 def inserir_farmacias():
-    f1 = Farmacia("Raul","Yasmin",True)
-    f2 = Farmacia("Henry","Breno",True)
-    f3 = Farmacia("Alana", "Paulo", True)
-    f4 = Farmacia("Brandom","Anderson", True)
+    with Session() as session:
+        try:
+            nome = input("Nome da farmácia: ")
+            responsavel = input("Responsável: ")
 
-    session.add_all([f1,f2,f3,f4])
-    session.commit()
+            f = Farmacia(nome, responsavel, True)
+
+            session.add(f)
+            session.commit()
+
+            print("Farmácia inserida com sucesso!")
+
+        except Exception as erro:
+            session.rollback()
+            print(f"Erro: {erro}")
 
 #inserir_farmacias()
 
 def inserir_medicamentos():
-    md= Medicamento("Dipirona",True,9.99,1)
-    md2= Medicamento("Neomicina",True,14.90,3)
-    md3= Medicamento("Tadalafila",True,29.99,4)
-    md4= Medicamento("Xarope",True,27.90,2)
-    md5= Medicamento("DIAD",True,9.99,4)
-    md6= Medicamento("Multigrip",True,14.99,2)
-    md7= Medicamento("Vitamina-C",True,61.95,3)
-    md8= Medicamento("Engov",True,10.33,1)
-    md9= Medicamento("Neosaldina",True,7.29,4)
-    md10= Medicamento("Vitamina-D",True,37.73,1)
+    with Session() as session:
+        try:
+            nome = input("Nome: ")
+            preco = float(input("Preço: "))
 
-    session.add_all([md,md2,md3,md4,md5,md6,md7,md8,md9,md10])
-    session.commit()
+            farmacias = session.query(Farmacia).all()
+            for f in farmacias:
+                print(f"{f.id} - {f.responsavel}")
+
+            farmacia_id = int(input("ID farmácia: "))
+
+            m = Medicamento(nome, True, preco, farmacia_id)
+
+            session.add(m)
+            session.commit()
+
+            print("Medicamento cadastrado!")
+
+        except Exception as erro:
+            session.rollback()
+            print(f"Erro: {erro}")
 
 #inserir_medicamentos()
 
@@ -41,7 +57,7 @@ def listar_filhos():
 
         except Exception as erro:
             session.rollback()
-            print(f"Ocorreu un erro: {erro}")
+            print(f"Ocorreu um erro: {erro}")
 #listar_filhos()
 
 def filtrar_filhos():
@@ -56,7 +72,27 @@ def filtrar_filhos():
 
         except Exception as erro:
             session.rollback()
-            print(f"Ocorreu un erro: {erro}")
+            print(f"Ocorreu um erro: {erro}")
 
 #filtrar_filhos()
 
+def listar_pais_com_filhos():
+    with Session() as session:
+        try:
+            input("Enter para listar farmácias com medicamentos")
+
+            farmacias = session.query(Farmacia).all()
+
+            print("\n=== FARMÁCIAS COM MEDICAMENTOS ===")
+
+            for f in farmacias:
+                medicamentos = session.query(Medicamento).filter_by(farmacia_id=f.id).all()
+
+                if medicamentos:
+                    print(f"ID: {f.id}")
+
+        except Exception as erro:
+            session.rollback()
+            print(f"Ocorreu um erro: {erro}")
+
+#listar_pais_com_filhos()
