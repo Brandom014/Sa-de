@@ -95,4 +95,5 @@ def listar_pais_com_filhos():
             session.rollback()
             print(f"Ocorreu um erro: {erro}")
 
-#listar_pais_com_filhos()
+
+
